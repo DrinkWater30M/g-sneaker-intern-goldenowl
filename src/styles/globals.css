@@ -193,8 +193,9 @@ body {
 .card .content .item-2 .left img {
   display: block;
   width: 140%;
-  transform: rotate(-28deg) translateY(-25px) translateX(-10px);
+  transform: rotate(-28deg) translateY(-40px);
   filter: drop-shadow(0 30px 20px rgba(0, 0, 0, 0.2));
+  object-position: center;
 }
 
 .card .content .item-2 .right {
