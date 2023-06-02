@@ -9,4 +9,4 @@ or
 npm run dev
 
 
------ Have a goog day -----
+----- Have a good day -----
