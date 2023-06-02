@@ -1,6 +1,17 @@
 import api from "@/data/api";
 import { Check } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+function useDidUpdateEffect(fn, inputs) {
+  const didMountRef = useRef(false);
+
+  useEffect(() => {
+    if (didMountRef.current) {
+      return fn();
+    }
+    didMountRef.current = true;
+  }, inputs);
+}
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -9,8 +20,22 @@ export default function Home() {
 
   // get shoes data after page loaded
   useEffect(() => {
-    const products = api.getAllShoes();
-    setProducts(products);
+    // get products from api
+    const newProducts = api.getAllShoes();
+    setProducts(newProducts);
+
+    // get pickList from localStorage
+    const newPickList = JSON.parse(localStorage.getItem("pickList"));
+    if (newPickList && newPickList.length != 0) {
+      console.log("newPickList");
+      setPickList(newPickList);
+    }
+
+    // get quantity from localStorage
+    const newQuantity = JSON.parse(localStorage.getItem("quantity"));
+    if (newQuantity && newQuantity.length != 0) {
+      setQuantity(newQuantity);
+    }
   }, []);
 
   // handle pick list when pick one shoes
@@ -58,6 +83,12 @@ export default function Home() {
     setQuantity(newQuantity);
   };
 
+  // handle save data of cart to be persistent
+  useDidUpdateEffect(() => {
+    localStorage.setItem("pickList", JSON.stringify(pickList));
+    localStorage.setItem("quantity", JSON.stringify(quantity));
+  }, [pickList, quantity]);
+
   return (
     <div className="container">
       <div className="card">
@@ -94,7 +125,7 @@ export default function Home() {
           <img src="/assets/nike.png" alt="logo" />
         </div>
         <div className="title">
-          <div className="title-product">Our Products</div>
+          <div className="title-product">Your Cart</div>
           <div className="title-price">
             $
             {pickList
