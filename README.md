@@ -5,7 +5,9 @@ npm install
 
 ## Step 2: Run app
 npm start
+<br>
 or
+<br>
 npm run dev
 
 
